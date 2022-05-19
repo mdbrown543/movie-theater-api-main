@@ -17,7 +17,7 @@ router.route("/")
 })
 
 //Update a rating on a specific show
-router.route("/:id/:newRating/watched")
+router.route("/:id/watched")
 .put([check("rating").not().isEmpty().trim()], async (req,res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
@@ -25,16 +25,14 @@ router.route("/:id/:newRating/watched")
     }
     let id = req.params.id
     let newShow = await Show.findByPk(id)
-    newShow.rating = req.body({
-       
-    })
+    newShow.rating = req.body.rating
 
     res.json(newShow)
 })
 
 //Checks status of show is between 5 and 25 characters and is not empty
 //Updates status of show at id & displays specific show
-router.route("/:id/:newStatus")
+router.route("/:id/updates")
 .put([check("status").not().isEmpty().trim(),check("status").isLength({ min: 5, max:25 })],async (req,res)=>{
     const errors = validationResult(req)
     if(!errors.isEmpty()){
@@ -42,7 +40,7 @@ router.route("/:id/:newStatus")
     }
     let id = req.params.id
     let newShow = await Show.findByPk(id)
-    newShow.status = req.params.newStatus
+    newShow.status = req.body.status
 
     res.json(newShow)
 })
